@@ -28,15 +28,14 @@ class AdvertisingActivity : AppCompatActivity() {
             MainActivity.actionStart(this)
             finish()
         }
+        lifecycle.addObserver(advertisingManager)
     }
 
     override fun onResume() {
         super.onResume()
-        advertisingManager.start()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        advertisingManager.cancel()
     }
 }

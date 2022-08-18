@@ -2,8 +2,11 @@ package com.demo.lifecycledemo
 
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
-class AdvertisingManager {
+class AdvertisingManager : LifecycleObserver {
     private val TAG = "AdvertisingManager"
     var advertisingListener: AdvertisingListener? = null
 
@@ -19,17 +22,20 @@ class AdvertisingManager {
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun start() {
         Log.d(TAG, "start: ")
         countDownTime?.start()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun cancel() {
         Log.d(TAG, "cancel: ")
         countDownTime?.cancel()
     }
+
     interface AdvertisingListener {
-        fun timing(seconds:Int)
+        fun timing(seconds: Int)
         fun interMainActivity()
     }
 }
