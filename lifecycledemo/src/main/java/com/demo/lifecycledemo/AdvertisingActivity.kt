@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 
@@ -11,19 +12,6 @@ private const val TAG = "AdvertisingActivity"
 
 class AdvertisingActivity : AppCompatActivity() {
     private var timeTv: TextView? = null
-    private val advertisingListener: AdvertisingManager.AdvertisingListener by lazy {
-        object : AdvertisingManager.AdvertisingListener {
-            override fun timing(seconds: Int) {
-                timeTv?.text = " left $seconds "
-                advertisingViewModel.seconds = seconds * 1000L
-            }
-
-            override fun interMainActivity() {
-                MainActivity.actionStart(this@AdvertisingActivity)
-                finish()
-            }
-        }
-    }
     private lateinit var advertisingViewModel: AdvertisingViewModel
 
     private lateinit var advertisingManager: AdvertisingManager
@@ -32,9 +20,8 @@ class AdvertisingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_advertising)
         advertisingViewModel = ViewModelProvider(this).get(AdvertisingViewModel::class.java)
-        advertisingManager = AdvertisingManager(advertisingViewModel.seconds)
+        advertisingManager = AdvertisingManager(advertisingViewModel)
         timeTv = findViewById(R.id.timeTv)
-        advertisingManager.advertisingListener = advertisingListener
         timeTv?.setOnClickListener {
             Log.d(TAG, "click:${lifecycle.currentState} ")
             MainActivity.actionStart(this)
@@ -42,6 +29,18 @@ class AdvertisingActivity : AppCompatActivity() {
         }
         lifecycle.addObserver(advertisingManager)
         Log.d(TAG, "onCreate: ${lifecycle.currentState}")
+
+        advertisingViewModel._timingResult.observe(this, object : Observer<Long> {
+            override fun onChanged(t: Long) {
+                Log.d(TAG, "onChanged: $t")
+                if (t == 0L) {
+                    MainActivity.actionStart(this@AdvertisingActivity)
+                    finish()
+                } else {
+                    timeTv?.text = "left ${t}  "
+                }
+            }
+        })
     }
 
     override fun onStart() {

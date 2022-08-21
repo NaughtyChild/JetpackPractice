@@ -4,29 +4,28 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.*
 
-class AdvertisingManager(millsSeconds: Long) : LifecycleEventObserver {
+class AdvertisingManager(viewModel: AdvertisingViewModel) : LifecycleEventObserver {
     private val TAG = "AdvertisingManager"
-    var advertisingListener: AdvertisingListener? = null
-
-    private var countDownTime: CountDownTimer? = object : CountDownTimer(millsSeconds, 1000) {
+    private var countDownTime: CountDownTimer? = object : CountDownTimer(viewModel.seconds,
+        1000) {
         override fun onTick(millisUntilFinished: Long) {
+            Log.d(TAG, "onTick: $millisUntilFinished")
             Log.d(TAG, "onTick: time left ${millisUntilFinished / 1000}")
-            advertisingListener?.timing((millisUntilFinished / 1000).toInt())
+            viewModel.setTimingResult(millisUntilFinished/1000)
         }
 
         override fun onFinish() {
             Log.d(TAG, "onFinish: ")
-            advertisingListener?.interMainActivity()
+            viewModel.setTimingResult(0)
         }
     }
 
-    fun start() {
+    private fun start() {
         Log.d(TAG, "start: ")
         countDownTime?.start()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun cancel() {
+    private fun cancel() {
         Log.d(TAG, "cancel: ")
         countDownTime?.cancel()
     }
@@ -57,10 +56,5 @@ class AdvertisingManager(millsSeconds: Long) : LifecycleEventObserver {
                 Log.d(TAG, "onStateChanged: $event")
             }
         }
-    }
-
-    interface AdvertisingListener {
-        fun timing(seconds: Int)
-        fun interMainActivity()
     }
 }
