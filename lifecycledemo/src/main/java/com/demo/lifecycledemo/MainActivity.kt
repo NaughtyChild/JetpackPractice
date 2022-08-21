@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import com.demo.lifecycledemo.databinding.ActivityMainBinding
 import com.demo.lifecycledemo.student.StudentViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -18,24 +19,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    lateinit var editTv: EditText
-    lateinit var submitBt: Button
-    lateinit var scoreTv: TextView
+
     lateinit var studentViewModel: StudentViewModel
+    lateinit var activityMainBinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
+
         studentViewModel = ViewModelProvider(this).get(StudentViewModel::class.java)
 
-        editTv = findViewById(R.id.editTv)
-        submitBt = findViewById(R.id.submitBt)
-        scoreTv = findViewById(R.id.scoreTv)
-
-        studentViewModel.newScore.observe(this){
-            scoreTv.text=it.toString()
+        studentViewModel.newScore.observe(this) {
+            activityMainBinding.scoreTv.text = it.toString()
         }
-        submitBt.setOnClickListener {
-            var studentId = editTv.text.trim().toString()
+        activityMainBinding.submitBt.setOnClickListener {
+            var studentId = activityMainBinding.editTv.text.trim().toString()
             studentViewModel.setStudentId(studentId.toInt())
         }
     }
