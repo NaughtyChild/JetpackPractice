@@ -4,15 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 
 private const val TAG = "AdvertisingActivity"
+
 class AdvertisingActivity : AppCompatActivity() {
     private var timeTv: TextView? = null
     private val advertisingListener: AdvertisingManager.AdvertisingListener by lazy {
         object : AdvertisingManager.AdvertisingListener {
             override fun timing(seconds: Int) {
                 timeTv?.text = " left $seconds "
+                advertisingViewModel.seconds = seconds * 1000L
             }
 
             override fun interMainActivity() {
@@ -21,11 +24,15 @@ class AdvertisingActivity : AppCompatActivity() {
             }
         }
     }
-    private val advertisingManager: AdvertisingManager = AdvertisingManager()
+    private lateinit var advertisingViewModel: AdvertisingViewModel
+
+    private lateinit var advertisingManager: AdvertisingManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_advertising)
+        advertisingViewModel = ViewModelProvider(this).get(AdvertisingViewModel::class.java)
+        advertisingManager = AdvertisingManager(advertisingViewModel.seconds)
         timeTv = findViewById(R.id.timeTv)
         advertisingManager.advertisingListener = advertisingListener
         timeTv?.setOnClickListener {
