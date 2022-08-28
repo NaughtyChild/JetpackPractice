@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetpackPractice">
         <activity
-            android:name=".AdvertisingActivity"
+            android:name=".databind.ViewBindActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".AdvertisingActivity"
             android:exported="true">
-
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>
