@@ -8,15 +8,9 @@
 
         <import type="android.view.View" />
 
-        <import type="com.demo.lifecycledemo.databind.ViewBindActivity.ClickHandler" />
-
-        <variable
-            name="clickHandler"
-            type="ClickHandler" />
-
         <variable
             name="user"
-            type="com.demo.lifecycledemo.databind.User" />
+            type="com.demo.lifecycledemo.databind.User1" />
     </data>
 
     <LinearLayout
@@ -29,12 +23,14 @@
         <EditText
             android:id="@+id/userNameEt"
             android:layout_width="200dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:text="@={user.userName}" />
 
         <EditText
             android:id="@+id/userIdEt"
             android:layout_width="200dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:text="@={user.userId}" />
 
         <include
             layout="@layout/user_layout"
@@ -44,13 +40,7 @@
             android:id="@+id/confirmBt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{(view)->clickHandler.click()}"
             android:text="confirm"
             android:textAllCaps="false" />
-
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:imageUrl="@{user.userPhoto}" />
     </LinearLayout>
 </layout>

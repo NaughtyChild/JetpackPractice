@@ -9,11 +9,10 @@ class ViewBindActivity : AppCompatActivity() {
     lateinit var viewBindLayout: ActivityViewBindBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val view: View
         viewBindLayout = ActivityViewBindBinding.inflate(layoutInflater)
         setContentView(viewBindLayout.root)
-        viewBindLayout.clickHandler = ClickHandler()
-        (viewBindLayout.clickHandler as ClickHandler).click()
+        viewBindLayout.user = User1()
+
 /*        viewBindLayout.confirmBt.setOnClickListener {
             viewBindLayout.user = getUser()
             *//*viewBindLayout.userIdTv.text = user.userId
@@ -33,11 +32,5 @@ class ViewBindActivity : AppCompatActivity() {
 
     private fun getUserName(): String? {
         return viewBindLayout.userNameEt.text?.toString()
-    }
-
-    inner class ClickHandler {
-        fun click() {
-            viewBindLayout.user = getUser()
-        }
     }
 }

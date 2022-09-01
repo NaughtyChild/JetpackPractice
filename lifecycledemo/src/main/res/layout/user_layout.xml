@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="com.demo.lifecycledemo.databind.User" />
+            type="com.demo.lifecycledemo.databind.User1" />
     </data>
 
     <LinearLayout
