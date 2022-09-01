@@ -13,6 +13,7 @@ class ViewBindActivity : AppCompatActivity() {
         viewBindLayout = ActivityViewBindBinding.inflate(layoutInflater)
         setContentView(viewBindLayout.root)
         viewBindLayout.clickHandler = ClickHandler()
+        (viewBindLayout.clickHandler as ClickHandler).click()
 /*        viewBindLayout.confirmBt.setOnClickListener {
             viewBindLayout.user = getUser()
             *//*viewBindLayout.userIdTv.text = user.userId
@@ -21,7 +22,9 @@ class ViewBindActivity : AppCompatActivity() {
     }
 
     private fun getUser(): User {
-        return User(getUserName(), getUserId())
+        return User(getUserName(), getUserId(),
+            "https://img1.baidu.com/it/u=4237248153,2960427068&fm=253&fmt=auto&app=120&f=PNG?w=803&h=500",
+            1)
     }
 
     private fun getUserId(): String? {
@@ -33,7 +36,7 @@ class ViewBindActivity : AppCompatActivity() {
     }
 
     inner class ClickHandler {
-        fun click(view:View) {
+        fun click() {
             viewBindLayout.user = getUser()
         }
     }
