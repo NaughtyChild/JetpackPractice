@@ -5,7 +5,9 @@ import com.demo.roommodule.MyApplication
 
 @Entity
 data class Account(
-    @PrimaryKey(autoGenerate = true) var accountId: Int? = null, var loginName: String,
+    @PrimaryKey(autoGenerate = true)
+    var accountId: Int? = null,
+    var loginName: String,
     var loginPassword: String
 )
 
@@ -17,6 +19,10 @@ interface AccountDao {
 
     @Query("select * from Account")
     fun loadAccountList(): List<Account>
+
+    @Query("select * from Account where loginName == :loginName ")
+    fun findAccountByLoginAccount(loginName:String):List<Account>
+
 }
 
 @Database(entities = arrayOf(Account::class), version = 1)
